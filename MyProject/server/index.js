@@ -3,6 +3,7 @@ const express = require('express')
 const sequelize = require('./db')
 const app = express()
 const WSServer = require('express-ws')(app)
+const models = require('./models/models.js')
 //для широковещательных рассылок
 //const aWss = WSServer.getWss()
 //const cors = require('cors')
