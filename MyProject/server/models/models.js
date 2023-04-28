@@ -9,21 +9,30 @@ const Peoples = sequelize.define('Peoples', {
     role: {type:DataTypes.STRING, defaultValue:"USER"}
 });
 
-const Rang = sequelize.define('Rang', {
+const Chang_log = sequelize.define('Chang_log', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    rang_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    table_name: {type:DataTypes.STRING, allowNull: false},
+    fild_name: {type:DataTypes.STRING, allowNull: false},
+    old_data: {type:DataTypes.STRING, allowNull: false},
+    new_data: {type:DataTypes.STRING, allowNull: false},
+    date_time: {type:DataTypes.DATE, defaultValue: DataTypes.NOW}
 });
 
 const Doljnost = sequelize.define('Doljnost', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     doljnost_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    rang: {type:DataTypes.INTEGER, allowNull: false, defaultValue:999},
+});
+
+const Groups = sequelize.define('Groups', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    group: {type:DataTypes.STRING, },
 });
 
 const Departaments = sequelize.define('Departaments', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    index: {type:DataTypes.INTEGER, allowNull: true},
-    departament: {type:DataTypes.STRING, },
-    group: {type:DataTypes.STRING, },
+    index: {type:DataTypes.INTEGER, unique: true},
+    departament: {type:DataTypes.STRING,  allowNull: true},
 });
 
 const Organisations = sequelize.define('Organisations', {
@@ -243,8 +252,10 @@ const Communication_type = sequelize.define('Communication_type', {
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
 });
 
-Rang.hasMany(Peoples)  
-Peoples.belongsTo(Rang)
+const PPR = sequelize.define('ppr', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    date: {type:DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW},
+});
 
 Doljnost.hasMany(Peoples)
 Peoples.belongsTo(Doljnost)
@@ -252,8 +263,11 @@ Peoples.belongsTo(Doljnost)
 Organisations.hasMany(Departaments)
 Departaments.belongsTo(Organisations)
 
-Departaments.hasMany(Peoples)
-Peoples.belongsTo(Departaments)
+Departaments.hasMany(Groups)
+Groups.belongsTo(Departaments)
+
+Groups.hasMany(Peoples)
+Peoples.belongsTo(Groups)
 
 City.hasMany(Streets)
 Streets.belongsTo(City)
@@ -282,14 +296,20 @@ Case_record.belongsTo(Case_record_status)
 Destination.hasMany(Case_record)
 Case_record.belongsTo(Destination)
 
-Departaments.hasMany(Case_record)
-Case_record.belongsTo(Departaments)
+Groups.hasMany(Case_record)
+Case_record.belongsTo(Groups)
 
 Case_record_status.hasMany(Removed_case_record)
 Removed_case_record.belongsTo(Case_record_status)
 
 Destination.hasMany(Removed_case_record)
 Removed_case_record.belongsTo(Destination)
+
+Peoples.hasMany(PPR)
+PPR.belongsTo(Peoples)
+
+Peoples.hasMany(Chang_log)
+Chang_log.belongsTo(Peoples)
 
 Peoples.belongsToMany(Case_record, {through: People_vs_records})
 Case_record.belongsToMany(Peoples, {through: People_vs_records})
@@ -353,7 +373,8 @@ Equipment_info.belongsTo(Activ_equipment)
 
 module.exports = {
     Peoples, 
-    Rang, 
+    PPR,
+    Chang_log,
     Doljnost, 
     Departaments, 
     Organisations, 
