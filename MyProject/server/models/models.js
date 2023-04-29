@@ -4,17 +4,18 @@ const {DataTypes} = require('sequelize')
 const Peoples = sequelize.define('Peoples', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     fio: {type:DataTypes.STRING, allowNull: false},
-    email: {type:DataTypes.STRING, unique: true, },
-    password: {type:DataTypes.STRING, },
-    role: {type:DataTypes.STRING, defaultValue:"USER"}
+    email: {type:DataTypes.STRING, unique: true},
+    password: {type:DataTypes.STRING},
+    role: {type:DataTypes.STRING, defaultValue:"USER"},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Chang_log = sequelize.define('Chang_log', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     table_name: {type:DataTypes.STRING, allowNull: false},
     fild_name: {type:DataTypes.STRING, allowNull: false},
-    old_data: {type:DataTypes.STRING, allowNull: false},
-    new_data: {type:DataTypes.STRING, allowNull: false},
+    old_data: {type:DataTypes.STRING, allowNull: false, defaultValue: 'Добавлено'},
+    new_data: {type:DataTypes.STRING, allowNull: false, defaultValue: 'Удалено'},
     date_time: {type:DataTypes.DATE, defaultValue: DataTypes.NOW}
 });
 
@@ -22,37 +23,45 @@ const Doljnost = sequelize.define('Doljnost', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     doljnost_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     rang: {type:DataTypes.INTEGER, allowNull: false, defaultValue:999},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Groups = sequelize.define('Groups', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    group: {type:DataTypes.STRING, },
+    group: {type:DataTypes.STRING},
+    short_name: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Departaments = sequelize.define('Departaments', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     index: {type:DataTypes.INTEGER, unique: true},
     departament: {type:DataTypes.STRING,  allowNull: true},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Organisations = sequelize.define('Organisations', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     organisation_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Address = sequelize.define('Address', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     address_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const City = sequelize.define('City', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     city_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Streets = sequelize.define('Streets', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    street_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    street_name: {type:DataTypes.STRING, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Device_sets = sequelize.define('Device_sets', {
@@ -60,33 +69,39 @@ const Device_sets = sequelize.define('Device_sets', {
     serial_number: {type:DataTypes.STRING, unique: true},
     inv_number: {type:DataTypes.STRING, unique: true},
     room: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Switching_equipment = sequelize.define('Switching_equipment', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     eq_name: {type:DataTypes.STRING, unique: true, allowNull: false},
-    room: {type:DataTypes.STRING},
+    room: {type:DataTypes.STRING}, allowNull: false,
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Switching_equipment_type = sequelize.define('Switching_equipment_type', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     full_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     short_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Switching_equipment_boxes = sequelize.define('Switching_equipment_boxes', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     box_name: {type:DataTypes.STRING, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Box_models = sequelize.define('Box_models', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     model_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Case_record_status = sequelize.define('Case_record_status', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     status_value: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Destination = sequelize.define('Destination', {
@@ -95,6 +110,7 @@ const Destination = sequelize.define('Destination', {
     long: {type:DataTypes.STRING, unique: true, allowNull: false},
     for: {type:DataTypes.STRING},
     notes: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Case_record = sequelize.define('Case_record', {
@@ -109,6 +125,7 @@ const Case_record = sequelize.define('Case_record', {
     responsible_departament: {type:DataTypes.STRING},
     contract: {type: DataTypes.BOOLEAN, defaultValue:false},
     show_in_directory: {type: DataTypes.BOOLEAN, defaultValue:false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Removed_case_record = sequelize.define('Removed_case_record', {
@@ -123,10 +140,14 @@ const Removed_case_record = sequelize.define('Removed_case_record', {
     responsible_departament: {type:DataTypes.STRING},
     contract: {type: DataTypes.BOOLEAN, defaultValue:false},
     show_in_directory: {type: DataTypes.BOOLEAN, defaultValue:false},
+    organisation: {type:DataTypes.STRING},
+    destination: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const People_vs_records = sequelize.define('People_vs_records', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Routes = sequelize.define('Routes', {
@@ -135,6 +156,7 @@ const Routes = sequelize.define('Routes', {
     row: {type:DataTypes.INTEGER, allowNull: false},
     column: {type:DataTypes.INTEGER, allowNull: false},
     faulty_pair: {type:DataTypes.BOOLEAN, defaultValue:false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Removed_records_routes = sequelize.define('Removed_records_routes', {
@@ -142,18 +164,21 @@ const Removed_records_routes = sequelize.define('Removed_records_routes', {
     pair_number: {type:DataTypes.STRING, allowNull: false},
     row: {type:DataTypes.INTEGER, allowNull: false},
     column: {type:DataTypes.INTEGER, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Line_box_connections = sequelize.define('Line_box_connections', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     start_pair: {type:DataTypes.STRING, allowNull: false},
     start_pair: {type:DataTypes.STRING, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Lines = sequelize.define('Lines', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    id_com_eq_a: {type:DataTypes.INTEGER, allowNull: false},
-    id_com_eq_b: {type:DataTypes.INTEGER, allowNull: false},
+    id_com_eq_a: {type:DataTypes.INTEGER, allowNull: false, references: {model: Switching_equipment, key: 'id'}},
+    id_com_eq_b: {type:DataTypes.INTEGER, allowNull: false, references: {model: Switching_equipment, key: 'id'}},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Cables = sequelize.define('Cables', {
@@ -163,56 +188,67 @@ const Cables = sequelize.define('Cables', {
     langth: {type:DataTypes.INTEGER, allowNull: false},
     inv_number: {type:DataTypes.STRING, unique: true},
     service_group: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Cables_types = sequelize.define('Cables_types', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Lines_vs_cables = sequelize.define('Lines_vs_cables', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Country = sequelize.define('Country', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     country_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Brand = sequelize.define('Brand', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     brand_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Properties = sequelize.define('Properties', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     property_value: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Properties_names = sequelize.define('Properties_names', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     property_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Device_models = sequelize.define('Device_models', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     model_name: {type:DataTypes.STRING, unique: true, allowNull: false},
-    description: {type:DataTypes.STRING, allowNull: false}
+    description: {type:DataTypes.STRING, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const PBX_ports = sequelize.define('PBX_ports', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Forwarding_type = sequelize.define('Forwarding_type', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Forwarding = sequelize.define('Forwarding', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const PBX_config = sequelize.define('PBX_config', {
@@ -223,12 +259,14 @@ const PBX_config = sequelize.define('PBX_config', {
     room: {type:DataTypes.STRING, allowNull: false},
     hw_version: {type:DataTypes.STRING},
     sw_version: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Boards = sequelize.define('Boards', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     board_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     artikul: {type:DataTypes.STRING, unique: true},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Activ_equipment = sequelize.define('Activ_equipment', {
@@ -239,22 +277,26 @@ const Activ_equipment = sequelize.define('Activ_equipment', {
     room: {type:DataTypes.STRING, allowNull: false},
     hw_version: {type:DataTypes.STRING},
     sw_version: {type:DataTypes.STRING},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Equipment_info = sequelize.define('Equipment_info', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     title: {type:DataTypes.STRING, allowNull: false},
     description: {type:DataTypes.STRING, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const Communication_type = sequelize.define('Communication_type', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 const PPR = sequelize.define('ppr', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     date: {type:DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW},
+    admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
 Doljnost.hasMany(Peoples)
@@ -265,6 +307,9 @@ Departaments.belongsTo(Organisations)
 
 Departaments.hasMany(Groups)
 Groups.belongsTo(Departaments)
+
+Departaments.hasMany(Case_record)
+Case_record.belongsTo(Departaments)
 
 Groups.hasMany(Peoples)
 Peoples.belongsTo(Groups)
@@ -296,14 +341,8 @@ Case_record.belongsTo(Case_record_status)
 Destination.hasMany(Case_record)
 Case_record.belongsTo(Destination)
 
-Groups.hasMany(Case_record)
-Case_record.belongsTo(Groups)
-
-Case_record_status.hasMany(Removed_case_record)
-Removed_case_record.belongsTo(Case_record_status)
-
-Destination.hasMany(Removed_case_record)
-Removed_case_record.belongsTo(Destination)
+Groups.hasMany(Device_sets)
+Device_sets.belongsTo(Groups)
 
 Peoples.hasMany(PPR)
 PPR.belongsTo(Peoples)
@@ -347,14 +386,26 @@ Properties.belongsTo(Device_models)
 Brand.hasMany(Device_models)
 Device_models.belongsTo(Brand)
 
-PBX_ports.hasOne(Case_record)
-Case_record.belongsTo(PBX_ports)
+Case_record.hasOne(PBX_ports)
+PBX_ports.belongsTo(Case_record)
 
 Forwarding_type.hasMany(Forwarding)
 Forwarding.belongsTo(Forwarding_type)
 
 Case_record.hasMany(Forwarding)
 Forwarding.belongsTo(Case_record)
+
+Case_record.hasMany(Device_sets)
+Device_sets.belongsTo(Case_record)
+
+Device_models.hasMany(Device_sets)
+Device_sets.belongsTo(Device_models)
+
+Device_sets.hasMany(PPR)
+PPR.belongsTo(Device_sets)
+
+Case_record.hasMany(Routes)
+Routes.belongsTo(Case_record)
 
 Communication_type.hasMany(Device_models)
 Device_models.belongsTo(Communication_type)
@@ -377,7 +428,8 @@ module.exports = {
     Chang_log,
     Doljnost, 
     Departaments, 
-    Organisations, 
+    Organisations,
+    Groups, 
     Address, 
     City, 
     Streets, 
