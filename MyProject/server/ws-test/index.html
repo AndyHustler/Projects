@@ -7,20 +7,29 @@
     <title>Document</title>
 </head>
 <body>
-    <div data-model="root">
+    <div>
         <div><span name="curent_user">anspopov</span></div>
         <div data-model="city">
-            Город
-            <input type="text" name="city_name">
+            <div data-type="where">
+                Город
+                <input type="text" name="city_name">
+            </div>
+            <div data-type="updata">
+                Изменить название на 
+                <input type="text" name="city_name">
+            </div>
             <button data-action="select">Find</button>
             <button data-action="input">Save</button>
             <button data-action="update">Change</button>
             <button data-action="delete">Delete</button>
         </div>
         <div data-model="streets" style="margin-top: 10px;">
-            Улица
+            Город
             <input type="text" name="city_name">
+            Улица
             <input type="text" name="street_name">
+            Изменить название на 
+            <input type="text" name="updata">
             <button data-action="select">Find</button>
             <button data-action="input">Save</button>
             <button data-action="update">Change</button>

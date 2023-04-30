@@ -2,7 +2,6 @@ const {City} = require('../models/models')
 
 class CityController {
     async create(ws, msg) {
-        console.log('create');
         try {
             const city = await City.create({city_name:msg.request.where.city_name,admin_name:msg.admin_name})
             return ws.send(JSON.stringify(city));
@@ -12,41 +11,37 @@ class CityController {
         }
     }
     async getAll(ws, msg) {
-        if (msg.request.where.city_name.length === 0){
+        if (JSON.stringify(msg.request.where).length < 3){
             var city = await City.findAll();
         } else {
             var city = await City.findAll({
-                where: {
-                    city_name: msg.request.where.city_name,
-                }
+                where: msg.request.where,
             });
         }
         return ws.send(JSON.stringify(city));
     }
-    /*
-    upDate (req, res) {
-        const {upData} = req.body
-        const {upWhere} = req.body
+    upDate (ws, msg) {
         try {
-            City.update({upData}, {
-                where: {upWhere}
+            City.update(msg.request.updata, {
+                where: msg.request.where
             })
         } catch (e) {
             console.log(e)
         }
     }
-    delete(req,res) {
-        const {name} = req.body
+    async delete(ws, msg) {
+        console.log(JSON.stringify(msg.request.where))
+        if (JSON.stringify(msg.request.where).length < 3) return ws.send(JSON.stringify('CityController.delete: Не заданы условия для удаления'));
         try{
-            City.destroy(
-            {where: {name}}
-            )
-        
+            console.log(msg)
+            await City.destroy({where: msg.request.where,});
+            return ws.send(JSON.stringify(City.findAll()));
         } catch(e) {
             console.log(e)
+            ws.send(JSON.stringify(`CityController.delete: ошибка удаления ${e}`));
         }
+
     }
-    */
 }
 
 module.exports = new CityController()

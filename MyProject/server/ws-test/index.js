@@ -21,35 +21,64 @@ socket.onerror = () => {
 }
 
 let model = document.querySelectorAll('[data-model]');
-    //console.log(model);
+console.log(model);
 model.forEach((e) => {
     e.onclick = (event) => {
-        //console.log(e.dataset.model)
         switch (e.dataset.model) {
             case 'streets':
-                SendMessage (e, event, 'streets');
-                break;
             case 'city':
-                SendMessage (e, event, 'city');
+                SendMessage (e, event);
                 break;
         }
+        
     }
 });
 
-function SendMessage (e, event, model) {
+function SendMessage (e, event) {
     let target = event.target;
         if (target.tagName !== 'BUTTON') return;
         let msg = {};
         msg["action"] = target.dataset.action;
         msg["model"] = e.dataset.model;
-        var inpt = document.querySelectorAll(`[data-model=${model}] input`);
-        console.log(inpt);
+        var div = e.querySelectorAll('[data-type]');
+        console.log(div)
+        msg["request"] = {};
+        msg.request["where"] = {};
+        msg.request["updata"] = {};
+        div.forEach((d) =>{
+            if (d.dataset.type === 'where'){
+                var inpt = d.querySelectorAll(`[data-type="where"] input`);
+                console.log("where")
+                console.log(inpt)
+                inpt.forEach((i) => {
+                    if (i.value.length > 0) msg.request.where[`${i.name}`] = i.value;
+                })
+            }
+            if (d.dataset.type === 'updata'){
+                var inpt = d.querySelectorAll(`[data-type="updata"] input`);
+                console.log("updata")
+                console.log(inpt)
+                inpt.forEach((i) => {
+                    if (i.value.length > 0) msg.request.updata[`${i.name}`] = i.value;
+                })
+            }
+        })
+        /*
+        var inpt = document.querySelectorAll(`[data-model=${e.dataset.model}] input`);
         msg["request"] = {"where":{}}
         inpt.forEach((i) => {
-            msg.request.where[`${i.name}`] = i.value;
+            console.log(i.name);
+            if (i.value.length > 0) {
+                if (i.name === 'updata') {
+                    msg.request["updata"] = i.value;
+                } else {
+                    msg.request.where[`${i.name}`] = i.value;
+                }
+            }
         })
+        */
         msg["admin_name"] = document.getElementsByName('curent_user')[0].innerText;
-        console.log('msg');
+        console.log('msg2');
         console.log(msg);
         socket.send(JSON.stringify(msg));
 }
