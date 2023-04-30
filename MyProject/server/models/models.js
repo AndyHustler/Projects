@@ -75,7 +75,7 @@ const Device_sets = sequelize.define('Device_sets', {
 const Switching_equipment = sequelize.define('Switching_equipment', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     eq_name: {type:DataTypes.STRING, unique: true, allowNull: false},
-    room: {type:DataTypes.STRING}, allowNull: false,
+    room: {type:DataTypes.STRING, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 

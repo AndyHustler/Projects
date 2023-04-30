@@ -3,13 +3,17 @@ const express = require('express')
 const sequelize = require('./db')
 const app = express()
 const WSServer = require('express-ws')(app)
-const models = require('./models/models.js')
+const selectHandler = require('./handlers/selectHandler')
+const inputHandler = require('./handlers/inputHandler')
+const updateHandler = require('./handlers/updateHandler')
+const deleteHandler = require('./handlers/deleteHandler')
+//const models = require('./models/models.js')
 //для широковещательных рассылок
 //const aWss = WSServer.getWss()
 //const cors = require('cors')
 const PORT = process.env.PORT || 5000
-const fs = require('fs') //для работы с файловой системой
-const path = require('path')//для работы с файловой системой
+//const fs = require('fs') //для работы с файловой системой
+//const path = require('path')//для работы с файловой системой
 
 //app.use(cors())
 app.use(express.json())
@@ -29,73 +33,27 @@ start()
 
 app.ws('/', (ws, req) => {
     ws.on('message', (msg) => {
-        console.log(JSON.parse(msg))
         msg = JSON.parse(msg)
-        switch (msg.method) {
+        switch (msg.action) {
             case "connection":
-                ws.send('Подключение установлено!')
-                break
-            case "post":
-                postHandler(msg)
-                break
-            case "get":
-                getHandler(msg)
-                break
+                ws.send('Подключение установлено!');
+                break;
+            case "select":
+                selectHandler(ws, msg);
+                break;
+            case "input":
+                inputHandler(ws, msg)
+                break;
+            case "update":
+                updateHandler(ws, msg);
+                break;
             case "delete":
-                deleteHandler(msg)
-                break
+                deleteHandler(ws, msg);
+                break;
+            default:
+                console.log(`Module index. Нераспознанное собщение: ${msg}`)
         }
     })
 })
 
-const postHandler = (msg) => {
-    console.log(msg)
-}
-
-const getHandler = (msg) => {
-    console.log(msg)
-}
-const deleteHandler = (msg) => {
-    console.log(msg)
-}
-
-/*
-app.post('/image', (req, res) => {
-    try {
-        const data = req.body.img.replace(`data:image/png;base64,`, '')
-        fs.writeFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`), data, 'base64')
-        return res.status(200).json({message: "Загружено"})
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('error')
-    }
-})
-app.get('/image', (req, res) => {
-    try {
-        const file = fs.readFileSync(path.resolve(__dirname, 'files', `${req.query.id}.jpg`))
-        const data = `data:image/png;base64,` + file.toString('base64')
-        res.json(data)
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json('error')
-    }
-})
-*/
-
-
-
-//функция для обработки входящих сообщений
-//const connectionHandler = (ws, msg) => {
-//    ws.id = msg.id
-//    broadcastConnection(ws, msg)
-//}
-
-//функция делает широковещательну рассылку
-//const broadcastConnection = (ws, msg) => {
-//    aWss.clients.forEach(client => {
-//        if (client.id === msg.id) {
-            //client.send(JSON.stringify(msg))
-//            client.send(`Пользователь ${msg.username} подключился`)
-//        }
-//    })
-//}
+//module.exports = app()

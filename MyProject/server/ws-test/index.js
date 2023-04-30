@@ -1,9 +1,8 @@
-const btn = document.getElementById('btn')
 const socket = new WebSocket('ws://localhost:5000/')
 
 socket.onopen = () => {
     socket.send(JSON.stringify({
-        method: "connection",
+        action: "connection",
         id: 555,
         username: "Andy"
     }))
@@ -21,29 +20,36 @@ socket.onerror = () => {
 
 }
 
-btn.onclick= () =>{
-    socket.send(JSON.stringify({
-        message:"Hallo server!",
-        method: "message",
-        id: 555,
-        username: "Andy"
-    }))
-    socket.send(JSON.stringify({
-        message:"It for UPDATE or ADD!",
-        method: "post",
-        id: 555,
-        username: "Andy"
-    }))
-    socket.send(JSON.stringify({
-        message:"It my be SELECT!",
-        method: "get",
-        id: 555,
-        username: "Andy"
-    }))
-    socket.send(JSON.stringify({
-        message:"It for DELETE!",
-        method: "delete",
-        id: 555,
-        username: "Andy"
-    }))
+let model = document.querySelectorAll('[data-model]');
+    //console.log(model);
+model.forEach((e) => {
+    e.onclick = (event) => {
+        //console.log(e.dataset.model)
+        switch (e.dataset.model) {
+            case 'streets':
+                SendMessage (e, event, 'streets');
+                break;
+            case 'city':
+                SendMessage (e, event, 'city');
+                break;
+        }
+    }
+});
+
+function SendMessage (e, event, model) {
+    let target = event.target;
+        if (target.tagName !== 'BUTTON') return;
+        let msg = {};
+        msg["action"] = target.dataset.action;
+        msg["model"] = e.dataset.model;
+        var inpt = document.querySelectorAll(`[data-model=${model}] input`);
+        console.log(inpt);
+        msg["request"] = {"where":{}}
+        inpt.forEach((i) => {
+            msg.request.where[`${i.name}`] = i.value;
+        })
+        msg["admin_name"] = document.getElementsByName('curent_user')[0].innerText;
+        console.log('msg');
+        console.log(msg);
+        socket.send(JSON.stringify(msg));
 }
