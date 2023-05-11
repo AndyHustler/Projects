@@ -1,15 +1,16 @@
 const CityController = require('../controllers/cityController.js')
-const StreetsController = require('../controllers/StreetsController.js')
+const StreetsController = require('../controllers/streetsController.js')
 const { QueryTypes } = require('sequelize')
 
 const selectHandler = async (ws, msg) => {
     //console.log(msg)
-    switch (msg.model) {
-        case "city":
+    switch (msg.table) {
+        case "City":
+            //CityController.getAll(ws,msg);
+            //break;
+        case "Street":
             CityController.getAll(ws,msg);
-            break;
-        case "streets":
-            StreetsController.getAll(ws,msg);
+            //StreetsController.getAll(ws,msg);
             break;
         /*
         case "input":

@@ -1,30 +1,54 @@
-const {City} = require('../models/models')
+const models = require('../models/models')
 
 class CityController {
     async create(ws, msg) {
+        console.log('msg')
+        console.log(msg)
         try {
-            const city = await City.create({city_name:msg.request.where.city_name,admin_name:msg.admin_name})
-            return ws.send(JSON.stringify(city));
+            var prm = {};
+            for (var key in msg.request.where) {
+                prm[key] = msg.request.where[key];
+            }
+            prm["admin_name"] = msg.admin_name;
+            const rs = await models[msg.table].create(prm);
+            return ws.send(JSON.stringify(rs));
         } catch(e) {
             console.log('Ошибка: ' + e)
             ws.send(JSON.stringify('Ошибка: ' + e));
         }
     }
     async getAll(ws, msg) {
-        if (JSON.stringify(msg.request.where).length < 3){
-            var city = await City.findAll();
-        } else {
-            var city = await City.findAll({
-                where: msg.request.where,
-            });
-        }
-        return ws.send(JSON.stringify(city));
-    }
-    upDate (ws, msg) {
+        console.log(msg)
         try {
-            City.update(msg.request.updata, {
+            if ('where' in msg){
+                var rs = await models[msg.table].findAll({
+                    where: msg.where,
+                });
+            } else {
+                if ('attributes' in msg) {
+                    var rs = await models[msg.table].findAll({
+                        attributes: msg.attributes,
+                    });
+                } else {
+                    var rs = await models[msg.table].findAll();
+                }
+            }
+            var res = msg;
+            res["data"] = rs; 
+            return ws.send(JSON.stringify(res));
+        } catch(e) {
+            console.log('Ошибка getAll ' + e)
+        }
+    }
+    async upDate (ws, msg) {
+        try {
+            await models[msg.table].update(msg.request.updata, {
                 where: msg.request.where
             })
+            const rs = await models[msg.table].findAll();
+            var res = {};
+            res["data"] = rs; 
+            return ws.send(JSON.stringify(res));
         } catch (e) {
             console.log(e)
         }
@@ -34,8 +58,9 @@ class CityController {
         if (JSON.stringify(msg.request.where).length < 3) return ws.send(JSON.stringify('CityController.delete: Не заданы условия для удаления'));
         try{
             console.log(msg)
-            await City.destroy({where: msg.request.where,});
-            return ws.send(JSON.stringify(City.findAll()));
+            await models[msg.model].destroy({where: msg.request.where,});
+            const rs = await models[msg.model].findAll();
+            return ws.send(JSON.stringify(rs));
         } catch(e) {
             console.log(e)
             ws.send(JSON.stringify(`CityController.delete: ошибка удаления ${e}`));

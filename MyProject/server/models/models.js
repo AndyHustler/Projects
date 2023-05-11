@@ -26,21 +26,21 @@ const Doljnost = sequelize.define('Doljnost', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Groups = sequelize.define('Groups', {
+const Group = sequelize.define('Group', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     group: {type:DataTypes.STRING},
     short_name: {type:DataTypes.STRING},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Departaments = sequelize.define('Departaments', {
+const Departament = sequelize.define('Departament', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     index: {type:DataTypes.INTEGER, unique: true},
-    departament: {type:DataTypes.STRING,  allowNull: true},
+    departament: {type:DataTypes.STRING},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Organisations = sequelize.define('Organisations', {
+const Organisation = sequelize.define('Organisation', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     organisation_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
@@ -58,7 +58,7 @@ const City = sequelize.define('City', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Streets = sequelize.define('Streets', {
+const Street = sequelize.define('Street', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     street_name: {type:DataTypes.STRING, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
@@ -167,21 +167,21 @@ const Removed_records_routes = sequelize.define('Removed_records_routes', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Line_box_connections = sequelize.define('Line_box_connections', {
+const Line_box_connection = sequelize.define('Line_box_connection', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     start_pair: {type:DataTypes.STRING, allowNull: false},
     start_pair: {type:DataTypes.STRING, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Lines = sequelize.define('Lines', {
+const Communication_line = sequelize.define('Communication_line', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     id_com_eq_a: {type:DataTypes.INTEGER, allowNull: false, references: {model: Switching_equipment, key: 'id'}},
     id_com_eq_b: {type:DataTypes.INTEGER, allowNull: false, references: {model: Switching_equipment, key: 'id'}},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Cables = sequelize.define('Cables', {
+const Cable = sequelize.define('Cable', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     model: {type:DataTypes.STRING, allowNull: false},
     pairs_quantity: {type:DataTypes.INTEGER, allowNull: false},
@@ -191,7 +191,7 @@ const Cables = sequelize.define('Cables', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Cables_types = sequelize.define('Cables_types', {
+const Cables_type = sequelize.define('Cables_type', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     type_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
@@ -214,19 +214,19 @@ const Brand = sequelize.define('Brand', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Properties = sequelize.define('Properties', {
+const Devici_property = sequelize.define('Devici_property', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     property_value: {type:DataTypes.STRING},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Properties_names = sequelize.define('Properties_names', {
+const Property_name = sequelize.define('Property_name', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     property_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const Device_models = sequelize.define('Device_models', {
+const Device_model = sequelize.define('Device_model', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     model_name: {type:DataTypes.STRING, unique: true, allowNull: false},
     description: {type:DataTypes.STRING, allowNull: false},
@@ -293,7 +293,7 @@ const Communication_type = sequelize.define('Communication_type', {
     admin_name: {type:DataTypes.STRING, allowNull: false},
 });
 
-const PPR = sequelize.define('ppr', {
+const Ppr = sequelize.define('ppr', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     date: {type:DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW},
     admin_name: {type:DataTypes.STRING, allowNull: false},
@@ -302,23 +302,23 @@ const PPR = sequelize.define('ppr', {
 Doljnost.hasMany(Peoples)
 Peoples.belongsTo(Doljnost)
 
-Organisations.hasMany(Departaments)
-Departaments.belongsTo(Organisations)
+Organisation.hasMany(Departament)
+Departament.belongsTo(Organisation)
 
-Departaments.hasMany(Groups)
-Groups.belongsTo(Departaments)
+Departament.hasMany(Group)
+Group.belongsTo(Departament)
 
-Departaments.hasMany(Case_record)
-Case_record.belongsTo(Departaments)
+Departament.hasMany(Case_record)
+Case_record.belongsTo(Departament)
 
-Groups.hasMany(Peoples)
-Peoples.belongsTo(Groups)
+Group.hasMany(Peoples)
+Peoples.belongsTo(Group)
 
-City.hasMany(Streets)
-Streets.belongsTo(City)
+City.hasMany(Street)
+Street.belongsTo(City)
 
-Streets.hasMany(Address)
-Address.belongsTo(Streets)
+Street.hasMany(Address)
+Address.belongsTo(Street)
 
 Address.hasMany(Device_sets)
 Device_sets.belongsTo(Address)
@@ -341,11 +341,11 @@ Case_record.belongsTo(Case_record_status)
 Destination.hasMany(Case_record)
 Case_record.belongsTo(Destination)
 
-Groups.hasMany(Device_sets)
-Device_sets.belongsTo(Groups)
+Group.hasMany(Device_sets)
+Device_sets.belongsTo(Group)
 
-Peoples.hasMany(PPR)
-PPR.belongsTo(Peoples)
+Peoples.hasMany(Ppr)
+Ppr.belongsTo(Peoples)
 
 Peoples.hasMany(Chang_log)
 Chang_log.belongsTo(Peoples)
@@ -359,32 +359,32 @@ Routes.belongsTo(Switching_equipment_boxes)
 Switching_equipment_boxes.hasMany(Removed_records_routes)
 Removed_records_routes.belongsTo(Switching_equipment_boxes)
 
-Switching_equipment_boxes.hasMany(Line_box_connections)
-Line_box_connections.belongsTo(Switching_equipment_boxes)
+Switching_equipment_boxes.hasMany(Line_box_connection)
+Line_box_connection.belongsTo(Switching_equipment_boxes)
 
-Lines.belongsToMany(Cables, {through: Lines_vs_cables})
-Cables.belongsToMany(Lines, {through: Lines_vs_cables})
+Communication_line.belongsToMany(Cable, {through: Lines_vs_cables})
+Cable.belongsToMany(Communication_line, {through: Lines_vs_cables})
 
-Lines.hasMany(Line_box_connections)
-Line_box_connections.belongsTo(Lines)
+Communication_line.hasMany(Line_box_connection)
+Line_box_connection.belongsTo(Communication_line)
 
-Lines.hasMany(Lines_vs_cables)
-Lines_vs_cables.belongsTo(Lines)
+Communication_line.hasMany(Lines_vs_cables)
+Lines_vs_cables.belongsTo(Communication_line)
 
-Cables_types.hasMany(Cables)
-Cables.belongsTo(Cables_types)
+Cables_type.hasMany(Cable)
+Cable.belongsTo(Cables_type)
 
 Country.hasMany(Brand)
 Brand.belongsTo(Country)
 
-Properties_names.hasMany(Properties)
-Properties.belongsTo(Properties_names)
+Property_name.hasMany(Devici_property)
+Devici_property.belongsTo(Property_name)
 
-Device_models.hasMany(Properties)
-Properties.belongsTo(Device_models)
+Device_model.hasMany(Devici_property)
+Devici_property.belongsTo(Device_model)
 
-Brand.hasMany(Device_models)
-Device_models.belongsTo(Brand)
+Brand.hasMany(Device_model)
+Device_model.belongsTo(Brand)
 
 Case_record.hasOne(PBX_ports)
 PBX_ports.belongsTo(Case_record)
@@ -398,17 +398,17 @@ Forwarding.belongsTo(Case_record)
 Case_record.hasMany(Device_sets)
 Device_sets.belongsTo(Case_record)
 
-Device_models.hasMany(Device_sets)
-Device_sets.belongsTo(Device_models)
+Device_model.hasMany(Device_sets)
+Device_sets.belongsTo(Device_model)
 
-Device_sets.hasMany(PPR)
-PPR.belongsTo(Device_sets)
+Device_sets.hasMany(Ppr)
+Ppr.belongsTo(Device_sets)
 
 Case_record.hasMany(Routes)
 Routes.belongsTo(Case_record)
 
-Communication_type.hasMany(Device_models)
-Device_models.belongsTo(Communication_type)
+Communication_type.hasMany(Device_model)
+Device_model.belongsTo(Communication_type)
 
 Address.hasMany(PBX_config)
 PBX_config.belongsTo(Address)
@@ -424,15 +424,15 @@ Equipment_info.belongsTo(Activ_equipment)
 
 module.exports = {
     Peoples, 
-    PPR,
+    Ppr,
     Chang_log,
     Doljnost, 
-    Departaments, 
-    Organisations,
-    Groups, 
+    Departament, 
+    Organisation,
+    Group, 
     Address, 
     City, 
-    Streets, 
+    Street, 
     Device_sets, 
     Switching_equipment, 
     Switching_equipment_type, 
@@ -445,16 +445,16 @@ module.exports = {
     People_vs_records, 
     Routes, 
     Removed_records_routes, 
-    Line_box_connections, 
-    Lines, 
-    Cables, 
-    Cables_types, 
+    Line_box_connection, 
+    Communication_line, 
+    Cable, 
+    Cables_type, 
     Lines_vs_cables, 
     Country, 
     Brand, 
-    Properties, 
-    Properties_names, 
-    Device_models, 
+    Devici_property, 
+    Property_name, 
+    Device_model, 
     PBX_ports, 
     PBX_ports, 
     Forwarding_type, 

@@ -1,15 +1,16 @@
 const CityController = require('../controllers/cityController.js')
-const StreetsController = require('../controllers/StreetsController.js')
+const StreetsController = require('../controllers/streetsController.js')
 const { QueryTypes } = require('sequelize')
 
 const deleteHandler = async (ws, msg) => {
     //console.log(msg)
     switch (msg.model) {
-        case "city":
-            CityController.delete(ws, msg);
-            break;
-        case "streets":
-            StreetsController.delete(ws, msg);
+        case "City":
+            //CityController.delete(ws, msg);
+            //break;
+        case "Street":
+            CityController.delete(ws, msg);    
+            //StreetsController.delete(ws, msg);
             break;
         /*
         case "input":

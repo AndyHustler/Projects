@@ -36,7 +36,7 @@ app.ws('/', (ws, req) => {
         msg = JSON.parse(msg)
         switch (msg.action) {
             case "connection":
-                ws.send('Подключение установлено!');
+                ws.send('{"message":"Подключение установлено!"}');
                 break;
             case "select":
                 selectHandler(ws, msg);

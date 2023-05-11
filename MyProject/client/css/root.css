@@ -1,0 +1,107 @@
+:root {
+    --border-radius-default: 6px;
+    --font-size-s: 12px;
+    --font-size-m: 14px;
+    --font-size-l: 16px;
+    --default-text-color: #000;
+    --primary-text-color: #505050;
+    --background-default-color: #fff;
+    --background-disabled-color: #dfdfdf;
+    --border-inline-color: #2286f7;
+    --inline-hover-color: #40a9ff;
+    --inline-pressed-color: #096dd9;
+    --border-outline-color: #d9d9d9;
+    --border-outline-pressed-color: #096dd9;
+    --background-outline-hover-color: #e0f0ff;
+    --box-shadow-active: 0 0 5px 0 #1890ffa0;
+    --spacing-3x: 12px;
+    --button-small-size: 20px;
+    --button-medium-size: 25px;
+    --button-large-size: 30px;
+    --header-footer-height: 100px;
+    --vertical-menu-max-width: 160px;
+    --hover-fnt-color: #1890ff;
+    --border-color-main: #e8e8e8;
+    --new-color-bg-layout: #edf1f7;
+    --img-arow-drop-down: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" height="100" width="100"%3E%3Cpath d="M97.625 25.3l-4.813-4.89c-1.668-1.606-3.616-2.41-5.84-2.41-2.27 0-4.194.804-5.777 2.41L50 52.087 18.806 20.412C17.223 18.805 15.298 18 13.03 18c-2.225 0-4.172.804-5.84 2.41l-4.75 4.89C.813 26.95 0 28.927 0 31.23c0 2.346.814 4.301 2.439 5.865l41.784 42.428C45.764 81.174 47.689 82 50 82c2.268 0 4.215-.826 5.84-2.476l41.784-42.428c1.584-1.608 2.376-3.563 2.376-5.865 0-2.26-.792-4.236-2.375-5.932z"/%3E%3C/svg%3E');
+}
+
+body {
+    font-size: 18px;
+    font-family: 'Fira Sans', serif;
+}
+
+.conteiner {
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    align-items: center;
+}
+
+.content_conteiner {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.wite_conteiner {
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid transparent;
+    opacity: 1;
+    position: relative;
+}    
+
+.simple_controller_block, .simple_controller_block_input {
+    display: flex;
+    align-items: center;
+}
+
+.simple_controller_block_input {
+    display: none;
+}
+
+.data_table_conteiner {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.data_table {
+    border-collapse: collapse;
+    border: 0;
+}
+
+.data_table th {
+    background-color: var(--border-inline-color);
+    color: var(--background-default-color);
+}
+
+.data_table th:hover {
+    background-color: var(--inline-hover-color);
+    cursor: pointer;
+}
+
+.data_table th, .data_table td {
+    padding: 3px 10px;
+}
+
+.data_table_row_dark {
+    background-color: var(--new-color-bg-layout);
+}
+
+.data_table_row_bright {
+    background-color: #fff;
+}
+
+.data_table_row_dark:hover, .data_table_row_bright:hover  {
+    cursor: pointer;
+    background-color: var(--background-outline-hover-color);
+}
